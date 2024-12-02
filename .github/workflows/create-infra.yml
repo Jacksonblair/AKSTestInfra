@@ -21,10 +21,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}  # Ensure the Service Principal is stored in GitHub secrets
 
-      - name: Set environment variables
-        run: |
-          echo "resource_group=${{ env.RESOURCE_GROUP }}" >> $GITHUB_ENV
-
       - name: Install Terraform modules
         run: terraform init
 
@@ -32,7 +28,9 @@ jobs:
         run: terraform validate
 
       - name: Plan Terraform deployment
-        run: terraform plan -out=tfplan
+        env:
+          TF_LOG: TRACE
+        run: terraform plan -out=tfplan -var="resource_group=${{ env.RESOURCE_GROUP }}"
 
       - name: Apply Terraform deployment
         run: terraform apply -auto-approve tfplan
