@@ -23,7 +23,7 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "resource_group=${{ variables.RESOURCE_GROUP }}" >> $GITHUB_ENV
+          echo "resource_group=${{ env.RESOURCE_GROUP }}" >> $GITHUB_ENV
 
       - name: Install Terraform modules
         run: terraform init
