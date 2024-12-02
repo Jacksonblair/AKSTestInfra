@@ -1,0 +1,35 @@
+name: Destroy Infrastructure with Terraform
+
+on:
+  workflow_dispatch:  # This allows you to manually trigger the workflow
+
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.6  # Adjust version as needed
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Ensure the Service Principal is stored in GitHub secrets
+
+      - name: Set environment variables
+        run: |
+          echo "resource_group=${{ variables.RESOURCE_GROUP }}" >> $GITHUB_ENV
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Terraform Plan (Destroy)
+        run: terraform plan -destroy -out=tfplan
+
+      - name: Apply Terraform Destroy
+        run: terraform apply -auto-approve tfplan

@@ -1,0 +1,43 @@
+name: Deploy ACR and AKS with Terraform
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform-deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.6  # Adjust version as needed
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Ensure the Service Principal is stored in GitHub secrets
+
+      - name: Set environment variables
+        run: |
+          echo "resource_group=${{ variables.RESOURCE_GROUP }}" >> $GITHUB_ENV
+
+      - name: Install Terraform modules
+        run: terraform init
+
+      - name: Validate Terraform configuration
+        run: terraform validate
+
+      - name: Plan Terraform deployment
+        run: terraform plan -out=tfplan
+
+      - name: Apply Terraform deployment
+        run: terraform apply -auto-approve tfplan
+
+      - name: Output AKS Cluster Information
+        run: |
+          echo "AKS Cluster kubeconfig:"
+          terraform output kube_config
