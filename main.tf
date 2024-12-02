@@ -51,4 +51,5 @@ resource "azurerm_kubernetes_cluster" "example" {
 # Output the kube_config for the AKS cluster
 output "kube_config" {
   value = azurerm_kubernetes_cluster.example.kube_config
+  sensitive = true
 }
