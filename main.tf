@@ -9,15 +9,15 @@ variable "resource_group" {
 resource "azurerm_container_registry" "example" {
   name                     = "testacr"
   location                 = "AustraliaEast"
-  resource_group_name      = "my-resource-group"
-  sku                       = "Basic"
+  resource_group_name      = var.resource_group
+  sku                      = "Basic"
   admin_enabled            = true
 }
 
 resource "azurerm_kubernetes_cluster" "example" {
   name                = "test-aks-cluster"
   location            = "AustraliaEast"
-  resource_group_name = "my-resource-group"
+  resource_group_name = var.resource_group
   dns_prefix          = "myaks"
 
   default_node_pool {
