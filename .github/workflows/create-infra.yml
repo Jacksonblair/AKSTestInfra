@@ -21,10 +21,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}  # Ensure the Service Principal is stored in GitHub secrets
 
-      - name: Set Terraform Variables
-        env:
-          TF_VAR_subscription_id: ${{ env.SUBSCRIPTION_ID }}
-
       - name: Install Terraform modules
         run: terraform init
 
@@ -35,6 +31,8 @@ jobs:
 #        env:
 #          TF_LOG: TRACE
         run: terraform plan -out=tfplan
+        env:
+          TF_VAR_subscription_id: ${{ env.SUBSCRIPTION_ID }}
 
       - name: Apply Terraform deployment
         run: terraform apply -auto-approve tfplan
