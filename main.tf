@@ -1,7 +1,7 @@
 
 variable "resource_group_name" {
   type        = string
-  default     = "example-resource-group"
+  default     = "test-aks-resource-group"
   description = "The name of the resource group to create."
 }
 
@@ -23,7 +23,7 @@ resource "azurerm_resource_group" "example" {
 
 # Create the container registry
 resource "azurerm_container_registry" "example" {
-  name                     = "testacr"
+  name                     = "jb-aks-test-acr-123123213"
   location                 = azurerm_resource_group.example.location
   resource_group_name      = azurerm_resource_group.example.name
   sku                      = "Basic"
