@@ -28,9 +28,9 @@ jobs:
         run: terraform validate
 
       - name: Plan Terraform deployment
-        env:
-          TF_LOG: TRACE
-        run: terraform plan -out=tfplan -var="resource_group=${{ env.RESOURCE_GROUP }}"
+#        env:
+#          TF_LOG: TRACE
+        run: terraform plan -out=tfplan
 
       - name: Apply Terraform deployment
         run: terraform apply -auto-approve tfplan

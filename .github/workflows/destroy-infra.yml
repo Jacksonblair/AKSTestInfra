@@ -21,15 +21,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}  # Ensure the Service Principal is stored in GitHub secrets
 
-      - name: Set environment variables
-        run: |
-          echo "resource_group=${{ env.RESOURCE_GROUP }}" >> $GITHUB_ENV
-
       - name: Initialize Terraform
         run: terraform init
 
       - name: Terraform Plan (Destroy)
-        run: terraform plan -destroy -out=tfplan -var="resource_group=${{ env.RESOURCE_GROUP }}"
+        run: terraform plan -destroy -out=tfplan
 
       - name: Apply Terraform Destroy
         run: terraform apply -auto-approve tfplan
