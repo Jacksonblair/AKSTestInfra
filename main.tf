@@ -11,13 +11,7 @@ variable "resource_group_location" {
   description = "The location where the resource group will be created."
 }
 
-variable "subscription_id" {
-  type = string
-  description = "Subscription id for azure"
-}
-
 provider "azurerm" { 
-  subscription_id = var.subscription_id
   features {}
 }
 

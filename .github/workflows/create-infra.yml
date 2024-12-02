@@ -6,6 +6,11 @@ on:
 jobs:
   terraform-deployment:
     runs-on: ubuntu-latest
+    env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
     steps:
       - name: Checkout repository
@@ -31,8 +36,6 @@ jobs:
 #        env:
 #          TF_LOG: TRACE
         run: terraform plan -out=tfplan
-        env:
-          TF_VAR_subscription_id: ${{ env.SUBSCRIPTION_ID }}
 
       - name: Apply Terraform deployment
         run: terraform apply -auto-approve tfplan
