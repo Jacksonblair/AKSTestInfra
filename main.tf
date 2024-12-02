@@ -7,7 +7,7 @@ variable "resource_group" {
 }
 
 resource "azurerm_container_registry" "example" {
-  name                     = "test-acr"
+  name                     = "testacr"
   location                 = "AustraliaEast"
   resource_group_name      = "my-resource-group"
   sku                       = "Basic"
@@ -32,5 +32,5 @@ resource "azurerm_kubernetes_cluster" "example" {
 }
 
 output "kube_config" {
-  value = azurerm_kubernetes_cluster.example.kube_config.0.raw_kube_config
+  value = azurerm_kubernetes_cluster.example.kube_config.0.value
 }
