@@ -1,6 +1,3 @@
-provider "azurerm" {
-  features {}
-}
 
 variable "resource_group_name" {
   type        = string
@@ -12,6 +9,16 @@ variable "resource_group_location" {
   type        = string
   default     = "AustraliaEast"
   description = "The location where the resource group will be created."
+}
+
+variable "subscription_id" {
+  type = string
+  description = "Subscription id for azure"
+}
+
+provider "azurerm" { 
+  subscription_id = var.subscription_id
+  features {}
 }
 
 # Create the resource group
