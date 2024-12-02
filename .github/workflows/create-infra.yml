@@ -44,3 +44,9 @@ jobs:
         run: |
           echo "AKS Cluster kubeconfig:"
           terraform output kube_config
+
+      - name: Upload Terraform state
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-state
+          path: terraform.tfstate
