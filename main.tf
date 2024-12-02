@@ -15,6 +15,10 @@ provider "azurerm" {
   features {}
 }
 
+resource "random_id" "acr_name" {
+  byte_length = 8
+}
+
 # Create the resource group
 resource "azurerm_resource_group" "example" {
   name     = var.resource_group_name
@@ -23,7 +27,7 @@ resource "azurerm_resource_group" "example" {
 
 # Create the container registry
 resource "azurerm_container_registry" "example" {
-  name                     = "jb-aks-test-acr-123123213"
+  name                     = "acr${random_id.acr_name.hex}"
   location                 = azurerm_resource_group.example.location
   resource_group_name      = azurerm_resource_group.example.name
   sku                      = "Basic"
