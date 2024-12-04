@@ -9,13 +9,16 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: write
       repository-projects: write
+      
     env:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -54,8 +57,9 @@ jobs:
         with:
           name: terraform-state
           path: .
-          
+
+      - name: List (repo)
+        run: gh variable list
+      
       - name: Update last LAST_RUN_ID variable
         run: gh variable set LAST_RUN_ID --body ${{github.run_id}}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
