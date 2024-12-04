@@ -4,13 +4,10 @@ on:
   workflow_dispatch:
 
 jobs:
+
   terraform-deployment:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      actions: write
-      repository-projects: write
+    permissions: write-all
       
     env:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
