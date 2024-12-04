@@ -16,25 +16,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Download Terraform state
-        uses: actions/download-artifact@v4
+      - name: Azure login
+        uses: azure/login@v1
         with:
-          name: terraform-state
-          run-id: ${{ env.LAST_RUN_ID }}
-          github-token: ${{ secrets.VARIABLE_WRITE_TOKEN }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Ensure the Service Principal is stored in GitHub secrets
 
-#      - name: Azure login
-#        uses: azure/login@v1
-#        with:
-#          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Ensure the Service Principal is stored in GitHub secrets
-#
-#      - name: Set up Terraform
-#        uses: hashicorp/setup-terraform@v2
-#        with:
-#          terraform_version: 1.4.6  # Adjust version as needed
-#
-#      - name: Initialize Terraform
-#        run: terraform init
-#
-#      - name: Apply Terraform Destroy
-#        run: terraform apply -auto-approve
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+
+      - name: Copy terraform state from s3
+        run: aws s3 cp s3://aksprojectbucket/terraform.tfstate terraform.tfstate
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.6  # Adjust version as needed
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Apply Terraform Destroy
+        run: terraform apply -auto-approve
