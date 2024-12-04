@@ -54,9 +54,10 @@ jobs:
         with:
           name: terraform-state
           path: .
-
-      - name: List (repo)
-        run: gh variable list
       
       - name: Update last LAST_RUN_ID variable
-        run: gh variable set LAST_RUN_ID --body ${{github.run_id}}
+        run: |
+          gh variable list
+          gh variable set LAST_RUN_ID --body ${{github.run_id}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
