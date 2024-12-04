@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: terraform-state
-          path: .
+          path: ./output-state/
       
       - name: Update last LAST_RUN_ID variable
         run: |
