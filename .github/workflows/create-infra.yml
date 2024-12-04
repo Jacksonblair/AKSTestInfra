@@ -52,4 +52,4 @@ jobs:
           path: .
           
       - name: Update last LAST_RUN_ID variable
-        run: gh variable set LAST_RUN_ID ${{github.run_id}}
+        run: gh variable set LAST_RUN_ID --body ${{github.run_id}}
