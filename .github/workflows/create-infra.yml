@@ -60,4 +60,4 @@ jobs:
           gh variable list
           gh variable set LAST_RUN_ID --body ${{github.run_id}}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.VARIABLE_WRITE_TOKEN }}
