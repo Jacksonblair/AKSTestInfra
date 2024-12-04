@@ -40,13 +40,13 @@ jobs:
       - name: Apply Terraform deployment
         run: terraform apply -auto-approve tfplan
 
-      - name: Output AKS Cluster Information
-        run: |
-          echo "AKS Cluster kubeconfig:"
-          terraform output kube_config
+#      - name: Output AKS Cluster Information
+#        run: |
+#          echo "AKS Cluster kubeconfig:"
+#          terraform output kube_config
 
       - name: Upload Terraform state
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: terraform-state
-          path: terraform.tfstate
+          path: .
