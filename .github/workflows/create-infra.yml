@@ -30,6 +30,13 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}  # Ensure the Service Principal is stored in GitHub secrets
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+
       - name: Install Terraform modules
         run: terraform init
 
@@ -49,11 +56,14 @@ jobs:
 #          echo "AKS Cluster kubeconfig:"
 #          terraform output kube_config
 
-      - name: Upload Terraform state
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-state
-          path: ./output-state/
+#      - name: Upload Terraform state
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: terraform-state
+#          path: .
+
+      - name: Copy terraform state to S3
+        run: aws s3 cp terraform-state s3://aksprojectbucket/${{github.run_id}}
       
       - name: Update last LAST_RUN_ID variable
         run: |
