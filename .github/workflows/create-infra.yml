@@ -61,9 +61,12 @@ jobs:
 #        with:
 #          name: terraform-state
 #          path: .
+      
+      - name: Output dir
+        run: ls -l
 
       - name: Copy terraform state to S3
-        run: aws s3 cp terraform-state s3://aksprojectbucket/${{github.run_id}}
+        run: aws s3 cp terraform.tfstate s3://aksprojectbucket
       
       - name: Update last LAST_RUN_ID variable
         run: |

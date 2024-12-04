@@ -19,12 +19,12 @@ resource "random_id" "acr_name" {
   byte_length = 8
 }
 
-# # Create the resource group
-# resource "azurerm_resource_group" "example" {
-#   name     = var.resource_group_name
-#   location = var.resource_group_location
-# }
-# 
+# Create the resource group
+resource "azurerm_resource_group" "example" {
+  name     = var.resource_group_name
+  location = var.resource_group_location
+}
+ 
 # # Create the container registry
 # resource "azurerm_container_registry" "example" {
 #   name                     = "acr${random_id.acr_name.hex}"
